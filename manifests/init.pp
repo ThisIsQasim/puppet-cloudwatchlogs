@@ -30,6 +30,7 @@ class cloudwatchlogs (
   $logging_config_file  = $::cloudwatchlogs::params::logging_config_file,
   $region               = $::cloudwatchlogs::params::region,
   $log_level            = $::cloudwatchlogs::params::log_level,
+  $retention            = $::cloudwatchlogs::params::retention,
   $logs                 = {}
 ) inherits cloudwatchlogs::params {
 
