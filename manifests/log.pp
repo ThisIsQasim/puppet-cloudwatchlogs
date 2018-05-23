@@ -28,13 +28,11 @@ define cloudwatchlogs::log (
   concat::fragment { "cloudwatchlogs_fragment_${name}":
     target  => '/etc/awslogs/awslogs.conf',
     content => template('cloudwatchlogs/awslogs_log.erb'),
-  }
-
+  }~>
   exec { 'cloudwatchlogs-create':
     path    => '/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin',
     command => "aws logs create-log-group --log-group-name ${real_log_group_name}",
     onlyif  => '[ -x "$(command -v aws)" ]',
-    subscribe => Concat["cloudwatchlogs_fragment_${name}"],
     require => Service['awslogs'],
   }
 
