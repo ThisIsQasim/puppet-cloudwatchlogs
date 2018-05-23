@@ -28,14 +28,14 @@ define cloudwatchlogs::log (
     target  => '/etc/awslogs/awslogs.conf',
     content => template('cloudwatchlogs/awslogs_log.erb'),
   }~>
-  exec { 'cloudwatchlogs_create_${name}':
+  exec { "cloudwatchlogs_create_${name}":
     path    => '/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin',
     command => "aws logs create-log-group --region $(grep region /etc/awslogs/awscli.conf | awk {'print \$3'}) --log-group-name ${real_log_group_name} || :",
     onlyif  => '[ -x "$(command -v aws)" ]',
     require => Service['awslogs'],
   }
 
-  exec { 'cloudwatchlogs_retention_${name}':
+  exec { "cloudwatchlogs_retention_${name}":
     path    => '/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin',
     command => "aws logs put-retention-policy --region $(grep region /etc/awslogs/awscli.conf | awk {'print \$3'}) --log-group-name ${real_log_group_name} --retention-in-days ${retention}",
     onlyif  => '[ -x "$(command -v aws)" ]',
