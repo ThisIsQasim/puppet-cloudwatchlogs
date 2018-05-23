@@ -5,7 +5,7 @@ define cloudwatchlogs::log (
   $log_group_name  = undef,
   $multi_line_start_pattern = undef,
   $retention = '7',
-  $region = $::cloudwatchlogs::region,
+  $region = $cloudwatchlogs::region,
 
 ){
   if $path == undef {
