@@ -4,7 +4,7 @@ define cloudwatchlogs::log (
   $datetime_format = '%b %d %H:%M:%S',
   $log_group_name  = undef,
   $multi_line_start_pattern = undef,
-  $retention = 7,
+  $retention = '7',
   $region = $::cloudwatchlogs::params::region,
 
 ){
@@ -43,7 +43,6 @@ define cloudwatchlogs::log (
     command => "aws logs put-retention-policy --region ${region} --log-group-name ${real_log_group_name} --retention-in-days ${retention}",
     onlyif  => '[ -x "$(command -v aws)" ]',
     require => Service['awslogs'],
-    subscribe => $retention,
   }
 
 }
