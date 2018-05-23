@@ -4,6 +4,8 @@ define cloudwatchlogs::log (
   $datetime_format = '%b %d %H:%M:%S',
   $log_group_name  = undef,
   $multi_line_start_pattern = undef,
+  $retention = 7,
+  $region = $::cloudwatchlogs::params::region,
 
 ){
   if $path == undef {
@@ -26,6 +28,22 @@ define cloudwatchlogs::log (
   concat::fragment { "cloudwatchlogs_fragment_${name}":
     target  => '/etc/awslogs/awslogs.conf',
     content => template('cloudwatchlogs/awslogs_log.erb'),
+  }
+
+  exec { 'cloudwatchlogs-create':
+    path    => '/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin',
+    command => "aws logs create-log-group --log-group-name ${real_log_group_name}",
+    onlyif  => '[ -x "$(command -v aws)" ]',
+    subscribe => Concat["cloudwatchlogs_fragment_${name}"],
+    require => Service['awslogs'],
+  }
+
+  exec { 'cloudwatchlogs-retention':
+    path    => '/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin',
+    command => "aws logs put-retention-policy --region ${region} --log-group-name ${real_log_group_name} --retention-in-days ${retention}",
+    onlyif  => '[ -x "$(command -v aws)" ]',
+    require => Service['awslogs'],
+    subscribe => $retention,
   }
 
 }
