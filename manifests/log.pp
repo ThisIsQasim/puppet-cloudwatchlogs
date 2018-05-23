@@ -31,7 +31,7 @@ define cloudwatchlogs::log (
   }~>
   exec { 'cloudwatchlogs-create':
     path    => '/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin',
-    command => "aws logs create-log-group --log-group-name ${real_log_group_name}",
+    command => "aws logs create-log-group --region ${region} --log-group-name ${real_log_group_name}",
     onlyif  => '[ -x "$(command -v aws)" ]',
     require => Service['awslogs'],
   }
