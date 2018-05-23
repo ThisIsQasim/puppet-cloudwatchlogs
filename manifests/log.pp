@@ -4,7 +4,7 @@ define cloudwatchlogs::log (
   $datetime_format = '%b %d %H:%M:%S',
   $log_group_name  = undef,
   $multi_line_start_pattern = undef,
-  $retention = '7',
+  $retention = $::cloudwatchlogs::params::retention,
 
 ){
   if $path == undef {

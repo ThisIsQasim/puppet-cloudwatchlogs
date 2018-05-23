@@ -7,4 +7,5 @@ class cloudwatchlogs::params {
   $logging_config_file = '/etc/awslogs/awslogs_dot_log.conf'
   $region = undef
   $log_level = undef
+  $retention = '30'
 }
