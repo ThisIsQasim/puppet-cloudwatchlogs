@@ -8,4 +8,5 @@ class cloudwatchlogs::params {
   $region = undef
   $log_level = undef
   $retention = '30'
+  $s3path = undef
 }

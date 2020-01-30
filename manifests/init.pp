@@ -31,6 +31,7 @@ class cloudwatchlogs (
   $region               = $::cloudwatchlogs::params::region,
   $log_level            = $::cloudwatchlogs::params::log_level,
   $retention            = $::cloudwatchlogs::params::retention,
+  $s3path               = $::cloudwatchlogs::params::s3path,
   $logs                 = {}
 ) inherits cloudwatchlogs::params {
 
