@@ -21,7 +21,7 @@ define cloudwatchlogs::log (
   }
 
   $enabled = true
-  if ($optional == true) and ($s3path ! undef) {
+  if ($optional == true) and ($s3path != undef) {
     $switchvalue = inline_template("<%= `aws s3 cp ${s3path}/${real_log_group_name} -` %>")
     if $switch == 'false' {
       $enabled = false
